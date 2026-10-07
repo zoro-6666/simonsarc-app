@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f3f2ec">
+    <title>Create your profile — Simons Arc</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        --ink: #202c28;
+        --muted: #717a75;
+        --green: #285b4d;
+        --accent: #b36f4d;
+        --line: rgba(36,58,49,.14);
+        --paper: #f3f2ec;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        min-width: 320px;
+        min-height: 100vh;
+        margin: 0;
+        color: var(--ink);
+        background:
+          linear-gradient(rgba(49,80,67,.045) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(49,80,67,.045) 1px, transparent 1px),
+          radial-gradient(ellipse at 12% 78%, rgba(90,135,114,.13), transparent 36%),
+          var(--paper);
+        background-size: 72px 72px, 72px 72px, auto, auto;
+      }
+
+      button, input, select { font: inherit; }
+
+      .page {
+        width: min(1060px, calc(100% - 48px));
+        min-height: 100vh;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .topbar {
+        min-height: 84px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 11px;
+        color: var(--ink);
+        font-size: 18px;
+        font-weight: 680;
+        letter-spacing: -.04em;
+        text-decoration: none;
+      }
+
+      .brand-mark {
+        width: 30px;
+        height: 30px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(40,91,77,.34);
+        background: linear-gradient(145deg, #fff, #dce7de);
+      }
+
+      .brand-mark svg { width: 17px; height: 17px; }
+      .top-note { color: var(--muted); font-size: 12px; }
+      a { color: var(--green); text-decoration: none; }
+      a:hover { color: var(--accent); }
+
+      main {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 1fr minmax(340px, 430px);
+        align-items: center;
+        gap: clamp(42px, 9vw, 120px);
+        padding: 24px 0 64px;
+      }
+
+      .studio-copy { max-width: 440px; }
+      .eyebrow {
+        margin: 0 0 14px;
+        color: var(--accent);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: .19em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(36px, 5vw, 54px);
+        font-weight: 560;
+        letter-spacing: -.06em;
+        line-height: 1.02;
+      }
+
+      .description {
+        max-width: 380px;
+        margin: 16px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.75;
+      }
+
+      .architecture-note {
+        margin-top: 38px;
+        padding: 15px 0 15px 17px;
+        border-left: 2px solid #b98465;
+        color: #6b766f;
+        font-size: 11px;
+        line-height: 1.7;
+      }
+
+      .architecture-note strong { color: #45564c; font-weight: 630; }
+
+      .form-card {
+        padding: clamp(24px, 4vw, 35px);
+        border: 1px solid rgba(36,58,49,.14);
+        background: rgba(255,254,250,.87);
+        box-shadow: 0 22px 65px rgba(36,58,49,.09);
+      }
+
+      .form-card h2 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 630;
+        letter-spacing: -.035em;
+      }
+
+      .form-subtitle {
+        margin: 7px 0 23px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      .field { margin-bottom: 15px; }
+
+      label {
+        display: block;
+        margin-bottom: 7px;
+        color: #33443c;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      input, select {
+        width: 100%;
+        height: 44px;
+        padding: 0 12px;
+        border: 1px solid rgba(44,72,60,.2);
+        border-radius: 4px;
+        outline: none;
+        color: #26372f;
+        background: rgba(255,255,255,.8);
+        font-size: 12px;
+      }
+
+      input::placeholder { color: #969e97; }
+      input:focus, select:focus { border-color: rgba(40,91,77,.68); box-shadow: 0 0 0 3px rgba(40,91,77,.09); }
+
+      .password-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .divider { display: flex; align-items: center; gap: 12px; margin: 19px 0 13px; color: var(--muted); font-size: 10px; }
+      .divider::before, .divider::after { height: 1px; flex: 1; content: ""; background: var(--line); }
+      .social-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+      .social-button { min-height: 42px; border: 1px solid rgba(44,72,60,.2); border-radius: 4px; color: #34443d; background: rgba(255,255,255,.8); font-size: 11px; cursor: pointer; }
+      .social-button:hover { border-color: rgba(40,91,77,.55); background: #fff; }
+      .social-button:focus-visible { outline: 2px solid #56836e; outline-offset: 2px; }
+
+      .submit {
+        width: 100%;
+        height: 46px;
+        margin-top: 5px;
+        border: 1px solid var(--green);
+        border-radius: 4px;
+        color: #fff;
+        background: linear-gradient(105deg, #285b4d, #357360 55%, #285b4d);
+        box-shadow: 0 7px 19px rgba(40,91,77,.18);
+        font-size: 12px;
+        font-weight: 650;
+        cursor: pointer;
+        transition: filter .16s, transform .16s;
+      }
+
+      .submit:hover { filter: brightness(1.08); transform: translateY(-1px); }
+      .submit:focus-visible { outline: 2px solid #56836e; outline-offset: 2px; }
+
+      .privacy-note {
+        margin: 13px 0 0;
+        color: #7d867f;
+        font-size: 10px;
+        line-height: 1.6;
+      }
+
+      .message {
+        margin: 10px 0 0;
+        color: #a4473e;
+        font-size: 11px;
+        line-height: 1.5;
+      }
+
+      .signin {
+        margin: 17px 0 0;
+        color: var(--muted);
+        text-align: center;
+        font-size: 11px;
+      }
+
+      .footer {
+        min-height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      @media (max-width: 760px) {
+        .page { width: min(520px, calc(100% - 36px)); }
+        .topbar { min-height: 70px; }
+        main { grid-template-columns: 1fr; gap: 28px; padding: 26px 0 42px; }
+        .studio-copy { max-width: none; }
+        .description { margin-top: 11px; }
+        .architecture-note { display: none; }
+        .form-card { padding: 25px; }
+      }
+
+      @media (max-width: 420px) {
+        .page { width: calc(100% - 28px); }
+        .top-note { font-size: 10px; }
+        .password-grid { grid-template-columns: 1fr; gap: 0; }
+        .footer { align-items: flex-start; flex-direction: column; justify-content: center; gap: 5px; padding: 10px 0; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="topbar">
+        <a class="brand" href="index.html" aria-label="Simons Arc home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M5 20V4h14v16M5 9h14M5 14h14M10 9v11M15 9v11" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          Simons Arc
+        </a>
+        <span class="top-note">Already have a profile? <a href="index.html">Sign in</a></span>
+      </header>
+
+      <main>
+        <section class="studio-copy" aria-labelledby="page-title">
+          <p class="eyebrow">Simons Arc · Studio portal</p>
+          <h1 id="page-title">Make room<br>for what’s next.</h1>
+          <p class="description">Create your studio profile to organize project details, design work, and hours in one place.</p>
+          <div class="architecture-note"><strong>Considered design starts with a clear brief.</strong><br>Your studio workspace is ready for your first project.</div>
+        </section>
+
+        <section class="form-card" aria-labelledby="form-title">
+          <h2 id="form-title">Create your profile</h2>
+          <p class="form-subtitle">A few details to set up your Simons Arc workspace.</p>
+
+          <form id="profile-form">
+            <div class="field">
+              <label for="full-name">Full name</label>
+              <input id="full-name" name="name" type="text" placeholder="Your name" autocomplete="name" minlength="2" maxlength="80" required>
+            </div>
+
+            <div class="field">
+              <label for="email">Work email</label>
+              <input id="email" name="email" type="email" placeholder="you@studio.com" autocomplete="email" maxlength="254" required>
+            </div>
+
+            <div class="field">
+              <label for="role">Studio role</label>
+              <select id="role" name="role" required>
+                <option value="" selected disabled>Select your role</option>
+                <option>Architect</option>
+                <option>Interior designer</option>
+                <option>Landscape designer</option>
+                <option>Project manager</option>
+                <option>Student</option>
+                <option>Other</option>
+              </select>
+            </div>
+
+            <div class="password-grid">
+              <div class="field">
+                <label for="password">Create password</label>
+                <input id="password" name="password" type="password" placeholder="At least 12 characters" autocomplete="new-password" minlength="12" maxlength="128" required>
+              </div>
+              <div class="field">
+                <label for="confirm-password">Confirm password</label>
+                <input id="confirm-password" name="confirmPassword" type="password" placeholder="Repeat password" autocomplete="new-password" minlength="12" maxlength="128" required>
+              </div>
+            </div>
+
+            <button class="submit" type="submit">Create profile &amp; open workspace</button>
+            <p class="message" id="form-message" role="status" aria-live="polite"></p>
+          </form>
+
+          <div class="divider">or create a viewer profile with</div>
+          <div class="social-row">
+            <button class="social-button" type="button" data-provider="Google">Continue with Google</button>
+            <button class="social-button" type="button" data-provider="Apple">Continue with Apple</button>
+          </div>
+
+          <p class="privacy-note">Public sign-ups receive viewer access. Profile details are stored on the studio server; passwords are stored as secure hashes.</p>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>© 2026 Simons Arc · Architecture, interiors &amp; place.</span>
+        <span>Your studio, thoughtfully organized.</span>
+      </footer>
+    </div>
+
+    <script>
+      const form = document.querySelector("#profile-form");
+      const password = document.querySelector("#password");
+      const confirmPassword = document.querySelector("#confirm-password");
+      const message = document.querySelector("#form-message");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (!form.reportValidity()) return;
+        if (password.value !== confirmPassword.value) {
+          confirmPassword.setCustomValidity("Passwords do not match.");
+          confirmPassword.reportValidity();
+          message.textContent = "The passwords do not match. Please check both fields.";
+          confirmPassword.focus();
+          return;
+        }
+
+        confirmPassword.setCustomValidity("");
+        const profile = {
+          name: form.elements.name.value.trim(),
+          email: form.elements.email.value.trim().toLowerCase(),
+          studioRole: form.elements.role.value,
+          password: password.value
+        };
+
+        const submit = form.querySelector(".submit");
+        submit.disabled = true;
+        message.textContent = "Creating your profile…";
+        try {
+          const response = await fetch("/api/auth/signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(profile)
+          });
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.error || "Profile creation failed.");
+          window.location.assign("sheet.html");
+        } catch (error) {
+          console.error("Profile creation request failed.", error);
+          message.textContent = error instanceof TypeError
+            ? "The studio server could not be reached. Start the server and try again."
+            : error.message;
+          submit.disabled = false;
+        }
+      });
+
+      confirmPassword.addEventListener("input", () => {
+        confirmPassword.setCustomValidity("");
+        message.textContent = "";
+      });
+
+      document.querySelectorAll(".social-button").forEach((button) => {
+        button.addEventListener("click", () => {
+          window.location.assign(`/api/auth/${button.dataset.provider.toLowerCase()}`);
+        });
+      });
+    </script>
+  </body>
+</html>

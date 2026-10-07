@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f3f2ec">
+    <title>Studio sheet — Simons Arc</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        --ink: #202c28;
+        --muted: #748078;
+        --green: #285b4d;
+        --accent: #b36f4d;
+        --line: rgba(36, 58, 49, .14);
+        --paper: #f3f2ec;
+        --white: #fffefa;
+      }
+
+      * { box-sizing: border-box; }
+      [hidden] { display: none !important; }
+
+      body {
+        min-width: 360px;
+        min-height: 100vh;
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(ellipse at 15% 10%, rgba(90,135,114,.11), transparent 32%),
+          var(--paper);
+      }
+
+      button, input, select { font: inherit; }
+      button { color: inherit; }
+
+      .app { min-height: 100vh; display: flex; flex-direction: column; }
+
+      .topbar {
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 clamp(20px, 5vw, 72px);
+        border-bottom: 1px solid var(--line);
+        background: rgba(255, 254, 250, .78);
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 11px;
+        color: var(--ink);
+        font-size: 17px;
+        font-weight: 680;
+        letter-spacing: -.04em;
+        text-decoration: none;
+      }
+
+      .brand-mark {
+        width: 29px;
+        height: 29px;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(40,91,77,.34);
+        background: linear-gradient(145deg, #fff, #dce7de);
+      }
+
+      .brand-mark svg { width: 16px; height: 16px; }
+
+      .top-actions { display: flex; align-items: center; gap: 18px; }
+
+      .account-label { color: var(--muted); font-size: 12px; }
+      .role-badge { padding: 5px 8px; border: 1px solid rgba(40,91,77,.17); color: var(--green); background: #edf3ed; font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+
+      .signout {
+        color: var(--green);
+        font-size: 12px;
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .signout:hover { color: var(--accent); }
+
+      main {
+        width: min(1440px, 100%);
+        margin: 0 auto;
+        padding: 48px clamp(20px, 5vw, 72px) 36px;
+        flex: 1;
+      }
+
+      .heading-row {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 25px;
+      }
+
+      .eyebrow {
+        margin: 0 0 9px;
+        color: var(--accent);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(28px, 4vw, 38px);
+        font-weight: 570;
+        letter-spacing: -.055em;
+        line-height: 1.08;
+      }
+
+      .subtitle {
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .toolbar { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+
+      .button {
+        min-height: 39px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 0 14px;
+        border: 1px solid rgba(40,91,77,.2);
+        border-radius: 4px;
+        background: rgba(255,255,255,.68);
+        color: var(--green);
+        font-size: 12px;
+        font-weight: 620;
+        cursor: pointer;
+        transition: background .16s, transform .16s, box-shadow .16s;
+      }
+
+      .button:hover { background: #fff; transform: translateY(-1px); }
+      .button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid #56836e; outline-offset: 2px; }
+      .button svg { width: 15px; height: 15px; }
+
+      .button.primary {
+        border-color: var(--green);
+        color: white;
+        background: var(--green);
+        box-shadow: 0 4px 12px rgba(40,91,77,.16);
+      }
+
+      .button.primary:hover { background: #34735f; }
+
+      .sheet-card {
+        overflow: hidden;
+        border: 1px solid rgba(36,58,49,.16);
+        background: var(--white);
+        box-shadow: 0 18px 55px rgba(36,58,49,.075);
+      }
+
+      .sheet-topline {
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 0 17px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .sheet-name { display: flex; align-items: center; gap: 9px; font-size: 12px; font-weight: 650; }
+      .sheet-icon { color: var(--green); display: inline-flex; }
+      .sheet-icon svg { width: 16px; height: 16px; }
+      .save-status { color: var(--muted); font-size: 11px; text-align: right; }
+
+      .table-scroll { overflow: auto; max-height: min(58vh, 590px); }
+
+      table {
+        width: 100%;
+        min-width: 1000px;
+        border-collapse: separate;
+        border-spacing: 0;
+        table-layout: fixed;
+      }
+
+      col.row-number { width: 45px; }
+      col.date { width: 145px; }
+      col.project { width: 175px; }
+      col.client { width: 160px; }
+      col.description { width: 250px; }
+      col.category { width: 150px; }
+      col.hours { width: 90px; }
+      col.status { width: 140px; }
+      col.remove { width: 50px; }
+
+      thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        height: 42px;
+        padding: 0 10px;
+        border-right: 1px solid rgba(36,58,49,.09);
+        border-bottom: 1px solid rgba(36,58,49,.16);
+        color: #59665f;
+        background: #f0f1eb;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: .025em;
+        text-align: left;
+        white-space: nowrap;
+      }
+
+      thead th:first-child { color: #89938d; text-align: center; }
+      thead th:last-child { border-right: 0; }
+
+      tbody th.row-index {
+        padding: 0;
+        border-right: 1px solid rgba(36,58,49,.1);
+        border-bottom: 1px solid rgba(36,58,49,.1);
+        color: #8a948d;
+        background: #f7f7f2;
+        font-size: 10px;
+        font-weight: 500;
+        text-align: center;
+      }
+
+      tbody td {
+        height: 43px;
+        padding: 0;
+        border-right: 1px solid rgba(36,58,49,.1);
+        border-bottom: 1px solid rgba(36,58,49,.1);
+        background: #fffefa;
+      }
+
+      tbody tr:hover td, tbody tr:focus-within td { background: #fbfcf8; }
+      tbody td:last-child { border-right: 0; text-align: center; }
+
+      tbody input, tbody select {
+        width: 100%;
+        height: 42px;
+        padding: 0 10px;
+        border: 0;
+        border-radius: 0;
+        outline: none;
+        color: #283a31;
+        background: transparent;
+        font-size: 11px;
+      }
+
+      tbody input:focus, tbody select:focus {
+        position: relative;
+        z-index: 1;
+        outline: 2px solid #56836e;
+        outline-offset: -2px;
+        background: #f5faf5;
+      }
+
+      tbody input[type="number"] { text-align: right; }
+      tbody input[data-field="date"] { color: #59665f; }
+      tbody select { color: #53635a; cursor: pointer; }
+
+      .remove-row {
+        width: 28px;
+        height: 28px;
+        padding: 0;
+        border: 0;
+        border-radius: 3px;
+        color: #9a8276;
+        background: transparent;
+        font-size: 17px;
+        cursor: pointer;
+      }
+
+      .remove-row:hover { color: #a4473e; background: #f8ece8; }
+
+      .sheet-footer {
+        min-height: 43px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 0 17px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        background: #fafaf6;
+        font-size: 10px;
+      }
+
+      .sheet-tabs { display: flex; align-self: stretch; align-items: center; gap: 14px; }
+      .sheet-tab { height: 100%; display: inline-flex; align-items: center; color: var(--green); font-weight: 650; border-bottom: 2px solid var(--green); }
+      .stats { display: flex; gap: 17px; }
+      .stats strong { color: #394a41; font-weight: 650; }
+
+      .hint {
+        margin: 13px 0 0;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.6;
+      }
+
+      .admin-panel {
+        margin-top: 25px;
+        border: 1px solid rgba(36,58,49,.16);
+        background: rgba(255,254,250,.88);
+        box-shadow: 0 14px 40px rgba(36,58,49,.05);
+      }
+
+      .admin-heading { padding: 19px 20px 13px; }
+      .admin-heading h2 { margin: 0; font-size: 16px; letter-spacing: -.025em; }
+      .admin-heading p { margin: 6px 0 0; color: var(--muted); font-size: 11px; line-height: 1.55; }
+      .admin-grid { display: grid; grid-template-columns: minmax(230px, .72fr) minmax(0, 1.6fr); border-top: 1px solid var(--line); }
+      .admin-card { min-width: 0; padding: 17px 20px; }
+      .admin-card + .admin-card { border-left: 1px solid var(--line); }
+      .admin-card h3 { margin: 0 0 12px; font-size: 11px; font-weight: 700; }
+      .server-details { display: grid; grid-template-columns: auto 1fr; gap: 9px 14px; margin: 0; font-size: 10px; }
+      .server-details dt { color: var(--muted); }
+      .server-details dd { margin: 0; color: var(--green); font-weight: 650; text-align: right; }
+      .admin-error { min-height: 15px; margin: 9px 0 0; color: #9b463d; font-size: 10px; }
+      .users-scroll { overflow: auto; }
+      .users-table { width: 100%; border-collapse: collapse; font-size: 10px; }
+      .users-table th, .users-table td { padding: 8px 7px; border-bottom: 1px solid var(--line); text-align: left; white-space: nowrap; }
+      .users-table th { color: var(--muted); font-size: 9px; font-weight: 700; }
+      .users-table td { color: #3c4b43; }
+      .users-table select { max-width: 110px; padding: 5px 7px; border: 1px solid var(--line); color: var(--green); background: #fff; font-size: 10px; }
+      .viewer-note { margin: 0 0 14px; padding: 10px 13px; border-left: 2px solid #b98465; color: #66736b; background: rgba(255,254,250,.7); font-size: 11px; line-height: 1.55; }
+
+      .footer {
+        min-height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin: 0 clamp(20px, 5vw, 72px);
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .footer a { color: inherit; text-decoration: none; }
+
+      @media (max-width: 680px) {
+        .topbar { min-height: 64px; padding: 0 18px; }
+        .account-label { display: none; }
+        main { padding: 34px 14px 28px; }
+        .heading-row { align-items: flex-start; flex-direction: column; gap: 16px; }
+        .toolbar { width: 100%; }
+        .toolbar .button { flex: 1; }
+        .sheet-topline { padding: 0 11px; }
+        .sheet-footer { padding: 0 11px; }
+        .stats { gap: 9px; }
+        .admin-grid { grid-template-columns: 1fr; }
+        .admin-card + .admin-card { border-top: 1px solid var(--line); border-left: 0; }
+        .admin-card { padding: 15px; }
+        .footer { margin: 0 14px; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <a class="brand" href="index.html" aria-label="Simons Arc studio portal">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M5 20V4h14v16M5 9h14M5 14h14M10 9v11M15 9v11" stroke="currentColor" stroke-width="1.25" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          Simons Arc
+        </a>
+        <div class="top-actions">
+          <span class="account-label" id="account-label">Studio workspace</span>
+          <span class="role-badge" id="role-badge" hidden></span>
+          <a class="signout" id="signout" href="index.html">Sign out</a>
+        </div>
+      </header>
+
+      <main>
+        <div class="heading-row">
+          <div>
+            <p class="eyebrow">Simons Arc · Studio workspace</p>
+            <h1>Project sheet</h1>
+            <p class="subtitle">Capture project details, design tasks, and time in one place.</p>
+          </div>
+          <div class="toolbar">
+            <button class="button" id="add-row" type="button" hidden>
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              Add row
+            </button>
+            <button class="button" id="export-csv" type="button">
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3v9m0 0 3.5-3.5M10 12 6.5 8.5M4 13v3h12v-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Export CSV
+            </button>
+            <button class="button" id="refresh-sheet" type="button">
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16 8a6 6 0 0 0-10.7-2L4 7.5M4 4v3.5h3.5M4 12a6 6 0 0 0 10.7 2L16 12.5M16 16v-3.5h-3.5" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Refresh
+            </button>
+            <button class="button primary" id="save-sheet" type="button" hidden>
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 3.5h10l2.5 2.5v10.5H3.5v-13h.5ZM6 3.5v5h7v-5M6.5 16.5v-5h7v5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+              Save sheet
+            </button>
+          </div>
+        </div>
+
+        <p class="viewer-note" id="viewer-note" hidden>View-only access — you can inspect and export the shared project data. Contact an administrator if you need edit access.</p>
+        <section class="sheet-card" aria-label="Shared project data sheet">
+          <div class="sheet-topline">
+            <div class="sheet-name">
+              <span class="sheet-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none"><rect x="3" y="2.5" width="14" height="15" rx="1" stroke="currentColor" stroke-width="1.4"/><path d="M3.5 7h13M3.5 11h13M8 7.5v9M12.5 7.5v9" stroke="currentColor" stroke-width="1.2"/></svg>
+              </span>
+              Studio project register
+            </div>
+            <span class="save-status" id="save-status" role="status" aria-live="polite">Connecting to studio server…</span>
+          </div>
+
+          <div class="table-scroll">
+            <table>
+              <colgroup>
+                <col class="row-number"><col class="date"><col class="project"><col class="client">
+                <col class="description"><col class="category"><col class="hours"><col class="status"><col class="remove">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Project</th>
+                  <th scope="col">Client</th>
+                  <th scope="col">Work item</th>
+                  <th scope="col">Category</th>
+                  <th scope="col">Hours</th>
+                  <th scope="col">Status</th>
+                  <th scope="col" aria-label="Remove row"></th>
+                </tr>
+              </thead>
+              <tbody id="sheet-rows"></tbody>
+            </table>
+          </div>
+
+          <div class="sheet-footer">
+            <div class="sheet-tabs"><span class="sheet-tab">Projects</span></div>
+            <div class="stats">
+              <span><strong id="entry-count">0</strong> entries</span>
+              <span><strong id="total-hours">0</strong> total hours</span>
+            </div>
+          </div>
+        </section>
+        <p class="hint" id="sheet-hint">Shared project data is stored on the studio server. Use Export CSV to open a copy in Excel.</p>
+
+        <section class="admin-panel" id="admin-panel" aria-labelledby="admin-title" hidden>
+          <div class="admin-heading">
+            <h2 id="admin-title">Admin controls</h2>
+            <p>Manage account access and check server health. Host operations such as restarting the server remain with your server operator.</p>
+          </div>
+          <div class="admin-grid">
+            <section class="admin-card" aria-labelledby="server-title">
+              <h3 id="server-title">Application server</h3>
+              <dl class="server-details">
+                <dt>Status</dt><dd id="server-state">Loading…</dd>
+                <dt>Runtime</dt><dd id="server-runtime">—</dd>
+                <dt>Uptime</dt><dd id="server-uptime">—</dd>
+                <dt>Database</dt><dd id="database-state">—</dd>
+              </dl>
+              <p class="admin-error" id="server-error" role="status" aria-live="polite"></p>
+            </section>
+            <section class="admin-card" aria-labelledby="users-title">
+              <h3 id="users-title">User access</h3>
+              <div class="users-scroll">
+                <table class="users-table">
+                  <thead><tr><th>Name</th><th>Email</th><th>Studio role</th><th>Access</th></tr></thead>
+                  <tbody id="users-list"></tbody>
+                </table>
+              </div>
+              <p class="admin-error" id="users-error" role="status" aria-live="polite"></p>
+            </section>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>© 2026 Simons Arc · Architecture, interiors &amp; place.</span>
+        <a href="index.html">Return to sign in</a>
+      </footer>
+    </div>
+
+    <script>
+      const fields = ["date", "project", "client", "workItem", "category", "hours", "status"];
+      const rowsElement = document.querySelector("#sheet-rows");
+      const saveStatus = document.querySelector("#save-status");
+      const hint = document.querySelector("#sheet-hint");
+      const dateFormat = new Intl.DateTimeFormat("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        timeZone: "UTC"
+      });
+      let user;
+      let sheetVersion = 0;
+      let isAdmin = false;
+
+      function formatDate(value) {
+        const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+        if (!match) return value;
+        const date = new Date(`${value}T00:00:00.000Z`);
+        return Number.isNaN(date.getTime()) || date.toISOString().slice(0, 10) !== value
+          ? value
+          : dateFormat.format(date);
+      }
+
+      function normalizeDate(value) {
+        const displayMatch = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(value);
+        if (displayMatch) {
+          const [, day, month, year] = displayMatch;
+          const isoDate = `${year}-${month}-${day}`;
+          return formatDate(isoDate) === value ? isoDate : value;
+        }
+        return value;
+      }
+
+      async function api(url, options = {}) {
+        const response = await fetch(url, options);
+        const result = await response.json();
+        if (!response.ok) {
+          const error = new Error(result.error || "The server request failed.");
+          error.code = result.code || "";
+          throw error;
+        }
+        return result;
+      }
+
+      function createInput(field, value = "") {
+        let input;
+        if (field === "category" || field === "status") {
+          input = document.createElement("select");
+          const choices = field === "category"
+            ? ["", "Architecture", "Interior design", "Landscape", "Planning", "Administration"]
+            : ["", "Not started", "In progress", "In review", "Complete"];
+          choices.forEach((choice) => {
+            const option = document.createElement("option");
+            option.value = choice;
+            option.textContent = choice || (field === "category" ? "Choose category" : "Choose status");
+            input.append(option);
+          });
+          input.value = value;
+        } else {
+          input = document.createElement("input");
+          input.type = field === "hours" ? "number" : "text";
+          if (field === "date") {
+            input.placeholder = "DD/MM/YYYY";
+            input.inputMode = "numeric";
+            input.maxLength = 10;
+            input.value = formatDate(value);
+          } else if (field === "hours") {
+            input.min = "0";
+            input.step = "0.25";
+            input.placeholder = "0";
+          } else if (field === "project") {
+            input.placeholder = "Project name";
+          } else if (field === "client") {
+            input.placeholder = "Client name";
+          } else if (field === "workItem") {
+            input.placeholder = "Add a work item";
+          }
+          input.value = value;
+        }
+        input.dataset.field = field;
+        input.setAttribute("aria-label", field === "workItem" ? "Work item" : field);
+        if (isAdmin) {
+          input.addEventListener("input", markUnsaved);
+          input.addEventListener("change", markUnsaved);
+        } else {
+          input.disabled = true;
+        }
+        return input;
+      }
+
+      function markUnsaved() {
+        saveStatus.textContent = "Changes not saved";
+        hint.textContent = "You have unsaved changes. Save the sheet to update shared project data.";
+        updateStats();
+      }
+
+      function addRow(data = {}, editable = isAdmin) {
+        const row = document.createElement("tr");
+        const index = document.createElement("th");
+        index.className = "row-index";
+        index.scope = "row";
+        row.append(index);
+
+        fields.forEach((field) => {
+          const cell = document.createElement("td");
+          if (editable) {
+            cell.append(createInput(field, data[field] || ""));
+          } else {
+            const value = document.createElement("span");
+            value.dataset.field = field;
+            value.textContent = field === "date" ? formatDate(data[field] ?? "") : data[field] ?? "";
+            value.style.padding = "0 10px";
+            value.style.fontSize = "11px";
+            cell.append(value);
+          }
+          row.append(cell);
+        });
+
+        const removeCell = document.createElement("td");
+        if (editable) {
+          const removeButton = document.createElement("button");
+          removeButton.className = "remove-row";
+          removeButton.type = "button";
+          removeButton.textContent = "×";
+          removeButton.setAttribute("aria-label", "Remove row");
+          removeButton.addEventListener("click", () => {
+            row.remove();
+            markUnsaved();
+            updateRowNumbers();
+          });
+          removeCell.append(removeButton);
+        }
+        row.append(removeCell);
+        rowsElement.append(row);
+        updateRowNumbers();
+        updateStats();
+      }
+
+      function updateRowNumbers() {
+        rowsElement.querySelectorAll(".row-index").forEach((cell, index) => {
+          cell.textContent = String(index + 1);
+        });
+      }
+
+      function readRows() {
+        return Array.from(rowsElement.rows, (row) => {
+          const values = {};
+          row.querySelectorAll("[data-field]").forEach((element) => {
+            const value = "value" in element ? element.value.trim() : element.textContent.trim();
+            values[element.dataset.field] = element.dataset.field === "date" && "value" in element
+              ? normalizeDate(value)
+              : value;
+          });
+          return values;
+        });
+      }
+
+      function updateStats() {
+        const values = readRows();
+        const populated = values.filter((row) => fields.some((field) => row[field] !== ""));
+        const hours = values.reduce((sum, row) => sum + (Number(row.hours) || 0), 0);
+        document.querySelector("#entry-count").textContent = String(populated.length);
+        document.querySelector("#total-hours").textContent = String(hours);
+      }
+
+      async function loadSheet() {
+        rowsElement.replaceChildren();
+        saveStatus.textContent = "Loading shared data…";
+        const result = await api("/api/entries");
+        sheetVersion = result.version;
+        result.entries.forEach((row) => addRow(row));
+        if (isAdmin) {
+          for (let index = result.entries.length; index < 8; index += 1) addRow();
+          saveStatus.textContent = "All changes saved";
+          hint.textContent = "Edits are shared with everyone in this studio after you save. Use Export CSV for an Excel-compatible copy.";
+        } else {
+          if (result.entries.length === 0) addRow({}, false);
+          saveStatus.textContent = "View-only";
+          hint.textContent = "You are viewing the latest shared project data. Use Export CSV to open a copy in Excel.";
+        }
+      }
+
+      document.querySelector("#add-row").addEventListener("click", () => {
+        addRow();
+        const lastRow = rowsElement.lastElementChild;
+        lastRow.querySelector('[data-field="date"]').focus();
+        markUnsaved();
+      });
+
+      document.querySelector("#refresh-sheet").addEventListener("click", async () => {
+        try {
+          await loadSheet();
+        } catch (error) {
+          console.error("Unable to refresh the studio sheet.", error);
+          saveStatus.textContent = "Refresh failed";
+          hint.textContent = error.message;
+        }
+      });
+
+      document.querySelector("#save-sheet").addEventListener("click", async () => {
+        const button = document.querySelector("#save-sheet");
+        button.disabled = true;
+        saveStatus.textContent = "Saving shared data…";
+        try {
+          const result = await api("/api/entries", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              version: sheetVersion,
+              entries: readRows().filter((row) => fields.some((field) => row[field] !== ""))
+            })
+          });
+          sheetVersion = result.version;
+          saveStatus.textContent = "All changes saved";
+          hint.textContent = "Your changes are now shared with everyone in this studio.";
+        } catch (error) {
+          console.error("Unable to save the studio sheet.", error);
+          saveStatus.textContent = error.code === "SHEET_CONFLICT" ? "Newer data exists" : "Save failed";
+          hint.textContent = error.message;
+        } finally {
+          button.disabled = false;
+        }
+      });
+
+      document.querySelector("#export-csv").addEventListener("click", () => {
+        const headers = ["Date", "Project", "Client", "Work item", "Category", "Hours", "Status"];
+        const values = readRows().filter((row) => fields.some((field) => row[field] !== ""));
+        const csvValue = (value) => {
+          let safeValue = String(value || "");
+          if (/^\s*[=+\-@]/.test(safeValue)) safeValue = `'${safeValue}`;
+          return `"${safeValue.replaceAll('"', '""')}"`;
+        };
+        const csv = [headers, ...values.map((row) => fields.map((field) =>
+          field === "date" ? formatDate(row[field]) : row[field]
+        ))]
+          .map((line) => line.map(csvValue).join(","))
+          .join("\r\n");
+        const blob = new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const download = document.createElement("a");
+        download.href = url;
+        download.download = "simons-arc-project-sheet.csv";
+        download.click();
+        window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+      });
+
+      function showUser(userInfo) {
+        user = userInfo;
+        isAdmin = user.accountRole === "admin";
+        document.querySelector("#account-label").textContent = user.name;
+        const badge = document.querySelector("#role-badge");
+        badge.textContent = isAdmin ? "Admin" : "Viewer";
+        badge.hidden = false;
+        document.querySelector("#add-row").hidden = !isAdmin;
+        document.querySelector("#save-sheet").hidden = !isAdmin;
+        document.querySelector("#viewer-note").hidden = isAdmin;
+        document.querySelector("#admin-panel").hidden = !isAdmin;
+        document.querySelector(".sheet-card").setAttribute("aria-label", isAdmin ? "Editable shared project data sheet" : "View-only shared project data sheet");
+      }
+
+      function formatUptime(seconds) {
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        return hours ? `${hours}h ${minutes}m` : `${minutes}m`;
+      }
+
+      async function loadAdminPanel() {
+        const [statusResult, userResult] = await Promise.all([
+          api("/api/admin/server-status"),
+          api("/api/admin/users")
+        ]);
+        document.querySelector("#server-state").textContent = statusResult.status;
+        document.querySelector("#server-runtime").textContent = statusResult.nodeVersion;
+        document.querySelector("#server-uptime").textContent = formatUptime(statusResult.uptimeSeconds);
+        document.querySelector("#database-state").textContent = statusResult.database;
+        document.querySelector("#server-error").textContent = "";
+
+        const usersList = document.querySelector("#users-list");
+        usersList.replaceChildren();
+        userResult.users.forEach((account) => {
+          const row = document.createElement("tr");
+          [account.name, account.email, account.studioRole].forEach((value) => {
+            const cell = document.createElement("td");
+            cell.textContent = value;
+            row.append(cell);
+          });
+          const accessCell = document.createElement("td");
+          const select = document.createElement("select");
+          select.setAttribute("aria-label", `Access role for ${account.name}`);
+          [["viewer", "Viewer"], ["admin", "Admin"]].forEach(([value, label]) => {
+            const option = document.createElement("option");
+            option.value = value;
+            option.textContent = label;
+            select.append(option);
+          });
+          select.value = account.accountRole;
+          select.disabled = account.id === user.id;
+          select.addEventListener("change", async () => {
+            select.disabled = true;
+            document.querySelector("#users-error").textContent = "";
+            try {
+              await api(`/api/admin/users/${account.id}/role`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ accountRole: select.value })
+              });
+              account.accountRole = select.value;
+            } catch (error) {
+              console.error("Unable to update user access.", error);
+              select.value = account.accountRole;
+              document.querySelector("#users-error").textContent = error.message;
+            } finally {
+              select.disabled = account.id === user.id;
+            }
+          });
+          accessCell.append(select);
+          row.append(accessCell);
+          usersList.append(row);
+        });
+      }
+
+      document.querySelector("#signout").addEventListener("click", async (event) => {
+        event.preventDefault();
+        try {
+          await api("/api/auth/logout", { method: "POST" });
+        } catch (error) {
+          console.error("Unable to sign out.", error);
+        } finally {
+          window.location.assign("index.html");
+        }
+      });
+
+      async function initializeWorkspace() {
+        try {
+          const session = await api("/api/auth/me");
+          showUser(session.user);
+          await loadSheet();
+          if (isAdmin) {
+            try {
+              await loadAdminPanel();
+            } catch (error) {
+              console.error("Unable to load admin controls.", error);
+              document.querySelector("#server-error").textContent = error.message;
+              document.querySelector("#users-error").textContent = error.message;
+            }
+          }
+        } catch (error) {
+          if (error.code === "AUTH_REQUIRED") {
+            window.location.replace("index.html");
+            return;
+          }
+          console.error("Unable to initialize the studio workspace.", error);
+          saveStatus.textContent = "Server unavailable";
+          hint.textContent = error.message;
+          document.querySelector("#refresh-sheet").disabled = true;
+        }
+      }
+
+      initializeWorkspace();
+    </script>
+  </body>
+</html>
